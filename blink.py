@@ -1,15 +1,15 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
-import RPi.GPIO as GPIO
+import RPi.GPIO as g
 import time
 
-GPIO.setmode(GPIO.BOARD)
-GPIO.setwarnings(False)
+g.setmode(g.BOARD)
+g.setwarnings(False)
 
 pins = [11, 12, 13, 15, 16]
 
-go = GPIO.output
-gs = GPIO.setup
+go = g.output
+gs = g.setup
 
 [gs(pin, 0) for pin in pins]
 
