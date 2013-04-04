@@ -15,10 +15,11 @@ def all(on=0):
   [go(pin, on) for pin in pins]
 
 def blink():
-  for i in range(100):
+  for i in range(30):
     for pin in pins:
-      time.sleep(.01)
+      time.sleep(.02)
       go(pin, i % 2)
+    time.sleep(.03)
 
 blink()
 all()

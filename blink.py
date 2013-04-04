@@ -15,8 +15,8 @@ def all(on=0):
   [go(pin, on) for pin in pins]
 
 def blink():
-  for i in range(100):
-    time.sleep(.05)
+  for i in range(20):
+    time.sleep(.1)
     all(i % 2)
 
 blink()
