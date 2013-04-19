@@ -20,11 +20,11 @@ def off():
 
  
 def svezza(): 
-  for i in range(30):
+  for i in range(50):
     for j in pins:
       go(j, random.randint(0,1))
-      time.sleep(.2)
-    time.sleep(.3)
+      time.sleep(.1)
+    time.sleep(.1)
 
 svezza()
 off() 

@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import RPi.GPIO as g
 
 g.setmode(g.BOARD)
@@ -9,6 +11,7 @@ gi = g.input
 
 pins = [11, 12, 13]
 [gs(pin, 0) for pin in pins]
+gs(7, 1)
 
 def on():
   [go(pin, 1) for pin in pins]
