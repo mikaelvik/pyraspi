@@ -4,26 +4,33 @@ import RPi.GPIO as g
 
 g.setmode(g.BOARD)
 g.setwarnings(False)
-
-gs = g.setup
-go = g.output
-gi = g.input
+gs, go, gi = g.setup, g.output, g.input
 
 pins = [11, 12, 13]
 [gs(pin, 0) for pin in pins]
-gs(7, 1)
+gs(7, 1, pull_up_down=g.PUD_DOWN)
 
-def on():
-  [go(pin, 1) for pin in pins]
-
-def off():
-  [go(pin, 0) for pin in pins]
-
-def switch(channel):
-  if gi(channel):
-    on()
+def switch(pin=0, value=0):
+  if pin:
+    go(pin, value)
   else:
-    off()
+    [go(pin, value) for pin in pins]
 
-g.add_event_detect(7, g.BOTH, callback=switch, bouncetime=50)
+def on(pin=0):
+  switch(pin, value=1)
+
+def off(pin=0):
+  switch(pin, value=0)
+
+
+active = 0
+def button_pressed(channel):
+  if gi(channel):
+    global active
+    off()
+    on(pins[active % len(pins)])
+    active +=1
+
+
+g.add_event_detect(7, g.BOTH, callback=button_pressed, bouncetime=50)
 
