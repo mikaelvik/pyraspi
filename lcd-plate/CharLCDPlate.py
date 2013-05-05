@@ -1,65 +1,75 @@
+#!/usr/bin/python
+
 from time import sleep
 from Adafruit_CharLCDPlate import Adafruit_CharLCDPlate
 
-lcd = Adafruit_CharLCDPlate()
-template = "                %s\n                %s"
-welcome = template % ("FIRST LINE", "     OH YEE!!")
-goodbye = "thank you\n   GOODBYE!"
-no_start_wait, no_end_wait = 0, 0
+class CharLCDPlate(Adafruit_CharLCDPlate):
 
-lm = lcd.message
-lb = lcd.backlight
-cls = lcd.clear
-lsl = lcd.scrollDisplayLeft
-lsr = lcd.scrollDisplayRight
+  def __init__(self, bm=()):
+    Adafruit_CharLCDPlate.__init__(self)
+    self.backlight(self.OFF)
+    if not bm or type(bm) != list:
+      bm = []
+    bm += [''] * (4 - len(bm))
+    self.buttons = dict(
+      left= (self.LEFT,  self.YELLOW, bm[0]),
+      up=   (self.UP,    self.ON,     bm[1]),
+      down= (self.DOWN,  self.TEAL,   bm[2]),
+      right=(self.RIGHT, self.VIOLET, bm[3])
+    )
 
-lb(0)
+  def message_bg(self, msg, bg=-1):
+    self.clear()
+    self.message(msg)
+    if bg >= 0:
+      self.backlight(bg)
 
-def slide_in():
-  for i in range(16):
-    lsl()
-    sleep(.07)
+  def slideLeft(self, steps=16, freq=.07):
+    for i in range(steps):
+      self.scrollDisplayLeft()
+      sleep(freq)
 
-def toggle_backlight(r, a=2, b=1):
-  for i in range(r):
-    lb(i % 2 and a or b)
-    sleep(.15)
+  def messageSlideLeft(self, msg, bg=-1, steps=16):
+    self.message_bg("\n".join([" " * steps + l for l in msg.split("\n")]), bg)
+    self.slideLeft(steps)
 
-while True:
-  if no_start_wait or lcd.buttonPressed(lcd.SELECT):
-    break
+  def toggle_backlight(self, repeat, col1, col2, freq=.15):
+    for i in range(repeat):
+      self.backlight(i % 2 and col1 or col2)
+      sleep(freq)
 
-lb(5)
-lm(welcome)
-slide_in()
-toggle_backlight(6)
+  def start_wait(self, wait=True):
+    while wait:
+      if self.buttonPressed(self.SELECT):
+        break
 
-col = (lcd.RED , lcd.YELLOW, lcd.GREEN, lcd.TEAL,
-       lcd.BLUE, lcd.VIOLET, lcd.ON   , lcd.OFF)
+  def start_listen(self, wait=True, goodbye_msg=""):
+    prev = -1
+    while wait:
+      if self.buttonPressed(self.SELECT):
+        self.message_bg(goodbye_msg, bg=2)
+        sleep(1.5)
+        self.message_bg("", bg=0)
+        break
 
-# Poll buttons, display message & set backlight accordingly
-buttons = ((lcd.LEFT  , lcd.YELLOW, "left msg"),
-           (lcd.UP    , lcd.ON,     "up msg"),
-           (lcd.DOWN  , lcd.TEAL,   "down msg"),
-           (lcd.RIGHT , lcd.VIOLET, "right msg"))
-prev = -1
-while True:
-  if no_end_wait or lcd.buttonPressed(lcd.SELECT): 
-    cls()
-    lm(goodbye)
-    lb(lcd.GREEN)
-    sleep(1.5)
-    break
-  
-  for button in buttons:
-    if lcd.buttonPressed(button[0]):
-      if button is not prev:
-        cls()
-        lb(button[1])
-        lcd.message(button[2])
-        prev = button
-      break
+      for button in self.buttons.values():
+        if self.buttonPressed(button[0]):
+          if button is not prev:
+            self.message_bg(bg=button[1], msg=button[2])
+            prev = button
+          break
 
-cls()
-lb(0)
+
+if __name__ == '__main__':
+  lcd = CharLCDPlate([
+    "Message left",
+    " UUUUUP",
+    "\n   DOWN",
+    "\n       right msg"
+  ])
+  lcd.start_wait()
+  lcd.messageSlideLeft("Demo starting\n    nooooo!!", bg=lcd.BLUE)
+  lcd.toggle_backlight(10, 1, 2)
+  lcd.start_listen(goodbye_msg="Fred ut.")
+
 
