@@ -18,10 +18,10 @@ sudo apt-get install python-rpi.gpio python3-rpi.gpio
 
 Clone the Adafruit repo
 ```bash
-git@github.com:adafruit/Adafruit-Raspberry-Pi-Python-Code.git
+git clone git@github.com:adafruit/Adafruit-Raspberry-Pi-Python-Code.git
 ```
 
-Copy these files into the lcd-plate directory:
+Copy these files into the lcd-plate directory (ignored by .gitignore)
 - Adafruit_CharLCDPlate.py
 - Adafruit_I2C.py
 - Adafruit_MCP230xx.py
