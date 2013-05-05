@@ -12,13 +12,20 @@ class CharLCDPlate(Adafruit_CharLCDPlate):
       bm = []
     bm += [''] * (4 - len(bm))
     self.buttons = dict(
-      left= (self.LEFT,  self.YELLOW, bm[0]),
-      up=   (self.UP,    self.ON,     bm[1]),
-      down= (self.DOWN,  self.TEAL,   bm[2]),
-      right=(self.RIGHT, self.VIOLET, bm[3])
+      left= dict(button=self.LEFT,  bg=self.YELLOW, msg=bm[0]),
+      up=   dict(button=self.UP,    bg=self.ON,     msg=bm[1]),
+      down= dict(button=self.DOWN,  bg=self.TEAL,   msg=bm[2]),
+      right=dict(button=self.RIGHT, bg=self.VIOLET, msg=bm[3])
     )
 
-  def message_bg(self, msg, bg=-1):
+  def set_button(self, **buttons):
+    """Set new values for one or more buttons.
+    Example: set_button(left=dict(bg=3, msg="New message"))
+    """
+    for key, value in buttons.items():
+      self.buttons[key].update(value)
+
+  def message_bg(self, msg, bg=-1, button=None):
     self.clear()
     self.message(msg)
     if bg >= 0:
@@ -53,11 +60,15 @@ class CharLCDPlate(Adafruit_CharLCDPlate):
         break
 
       for button in self.buttons.values():
-        if self.buttonPressed(button[0]):
+        if self.buttonPressed(button['button']):
           if button is not prev:
-            self.message_bg(bg=button[1], msg=button[2])
+            self.message_bg(**button)
             prev = button
           break
+
+  def off(self):
+    self.clear()
+    self.backlight(self.OFF)
 
 
 if __name__ == '__main__':
@@ -67,8 +78,9 @@ if __name__ == '__main__':
     "\n   DOWN",
     "\n       right msg"
   ])
+  lcd.set_button(up=dict(msg="different up\nmessage"), right=dict(bg=lcd.RED))
   lcd.start_wait()
-  lcd.messageSlideLeft("Demo starting\n    nooooo!!", bg=lcd.BLUE)
+  lcd.messageSlideLeft("Demo starting\n    nooooow!!", bg=lcd.BLUE)
   lcd.toggle_backlight(10, 1, 2)
   lcd.start_listen(goodbye_msg="Fred ut.")
 
