@@ -27,3 +27,16 @@ Copy these files into the lcd-plate directory (ignored by .gitignore)
 - Adafruit_MCP230xx.py
 - Adafruit_LCDtest.py
 
+#### REST SERVER
+
+Install the Bottle framework
+
+```bash
+sudo apt-get install python-bottle python-bottle-doc
+```
+
+Start the server 
+```bash
+sudo ./Server.py
+```
+
