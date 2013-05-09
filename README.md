@@ -40,3 +40,8 @@ Start the server
 sudo ./Server.py
 ```
 
+Set message and backlight
+```bash
+curl --data "msg=Your%20Message&bg=green" "http://<pi ip>/lcd"
+```
+
