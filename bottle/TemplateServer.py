@@ -12,5 +12,8 @@ def message(msg):
 
 bottle.debug(True)
 # listen on all interfaces
-bottle.run(host='0.0.0.0', port=8080)  
-
+bottle.run(
+  host='0.0.0.0',
+  port=80,
+  reloader=True
+)

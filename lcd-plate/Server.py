@@ -29,5 +29,9 @@ def message_slidein(msg):
 
 bottle.debug(True)
 # listen on all interfaces
-bottle.run(host='0.0.0.0', port=80)  
+bottle.run(
+  host='0.0.0.0', 
+  port=80,
+  reloader=True
+)  
 

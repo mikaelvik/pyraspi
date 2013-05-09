@@ -25,7 +25,7 @@ class CharLCDPlate(Adafruit_CharLCDPlate):
     for key, value in buttons.items():
       self.buttons[key].update(value)
 
-  def message_bg(self, msg, bg=-1, button=None):
+  def message_bg(self, msg, bg=-1, **ignored):
     self.clear()
     self.message(msg)
     if bg >= 0:
