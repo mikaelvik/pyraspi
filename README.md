@@ -3,9 +3,18 @@ pyraspi
 
 ### Overview
 
-Python scripts for GPIO input and output. 
+Python scripts for Camera Board, GPIO input and output. 
 
 ### Setup
+
+#### Camera Board
+
+Get a camera board, set it up. 
+```bash
+sudo ./Server.py
+```
+
+Visit your-ip/now
 
 #### LED
 
