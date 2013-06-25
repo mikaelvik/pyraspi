@@ -20,8 +20,8 @@ def images(filename):
 
 @get("/now")
 def capture_now():
-  filename = 'now-%s.jpg' % (datetime.now().strftime("%Y%m%d%H%M%S"), )
-  os.system("raspistill -o images/%s -t 500 -q 70 -h 600 -w 900 -ifx %s" % (filename, effect))
+  filename = 'now-%s.png' % (datetime.now().strftime("%Y%m%d%H%M%S"), )
+  os.system("raspistill -o images/%s -n -t 100 -q 70 -h 600 -w 900 -ifx %s" % (filename, effect))
   return images(filename)
 
 bottle.debug(True)

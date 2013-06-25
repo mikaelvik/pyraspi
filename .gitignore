@@ -3,5 +3,6 @@
 **/*.bck*
 **/_*.py
 **/*.log
-camera/images/*.jpg
-camera/images/*.png
+camera/**/*.jpg
+camera/**/*.png
+
