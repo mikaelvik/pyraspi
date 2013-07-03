@@ -6,3 +6,4 @@
 camera/**/*.jpg
 camera/**/*.png
 camera/**/*.avi
+camera/**/backup_*

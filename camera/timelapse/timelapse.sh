@@ -5,15 +5,15 @@
 # - install mencoder: sudo apt-get install mencoder
 #
 
-width=1920
-height=1080
+#width=1920
+#height=1080
+width=1210
+height=680
 
 quality=70
-delay=5000
-#duration=15000
+delay=10000
 #duration=600000
-duration=600000
-#duration=60000
+duration=7200000
 
 outputfile=mytimelapse.avi
 
@@ -29,7 +29,7 @@ ls *.jpg > stills.txt
 mencoder -nosound -ovc lavc \
 	-lavcopts vcodec=mpeg4:aspect=16/9:vbitrate=8000000 \
 	-vf scale=$width:$height \
-	-mf type=jpeg:fps=24 mf://@stills.txt \
+	-mf type=jpeg:fps=12 mf://@stills.txt \
 	-o $outputfile
 
 echo `date +%H:%M:%S` "Create image backup directory "
